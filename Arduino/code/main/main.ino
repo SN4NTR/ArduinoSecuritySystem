@@ -30,8 +30,8 @@ const byte COLUMNS = 3;
 const byte LCD_ROWS_AMOUNT = 4;
 const byte LCD_COLUMNS_AMOUNT = 20;
 
-const byte HUMIDITY_MAX_BORDER = 70;
-const byte TEMPERATURE_MAX_BORDER = 80;
+const byte HUMIDITY_MAX_BORDER = 80;
+const byte TEMPERATURE_MAX_BORDER = 40;
 
 const char KEYBOARD_KEYS[ROWS][COLUMNS] = {
   {'1', '2', '3'},
@@ -47,7 +47,7 @@ enum SystemStatus {
   CO_2,
   SMOKE,
   FLAME,
-  TEMPERATURE,
+  HIGH_TEMPERATURE,
   HUMIDITY,
   OK
 };
@@ -189,7 +189,7 @@ void displaySensorsInformation() {
 }
 
 boolean isDangerousSituation() {
-  return isSmoke() || isFlame() || isCo() || isCo2();
+  return isSmoke() || isFlame() || isCo() || isCo2() || isHighTemperature();
 }
 
 boolean isSmoke() {
@@ -219,6 +219,14 @@ boolean isCo() {
 boolean isCo2() {
   if (co2Value == HIGH) {
     systemStatus = CO_2;
+    return true;
+  }
+  return false;
+}
+
+boolean isHighTemperature() {
+  if (temperature > TEMPERATURE_MAX_BORDER) {
+    systemStatus = HIGH_TEMPERATURE;
     return true;
   }
   return false;
@@ -262,6 +270,9 @@ void processDangerousSituation() {
     case FLAME:
       displayFlameWarningMessage();
       break;
+    case HIGH_TEMPERATURE:
+      displayHighTemperatureWarningMessage();
+      break;
   }
 
   sendWarningMessage();
@@ -299,6 +310,14 @@ void displayFlameWarningMessage() {
   printOnLcd(7, 3, "is sent.");
 }
 
+void displayHighTemperatureWarningMessage() {
+  lcd.clear();
+  printOnLcd(7, 0, "WARNING!");
+  printOnLcd(2, 1, "High temperature!");
+  printOnLcd(2, 2, "SMS notification");
+  printOnLcd(7, 3, "is sent.");
+}
+
 void processOkSituation() {
   digitalWrite(RED_LED_PIN, LOW);
   digitalWrite(SOUNDER_PIN, LOW);
@@ -325,6 +344,9 @@ void sendWarningMessage() {
         break;
       case FLAME:
         sendFlameWarningMessage();
+        break;
+      case HIGH_TEMPERATURE:
+        sendHighTempertureWarningMessage();
         break;
     }
 
@@ -357,5 +379,12 @@ void sendSmokeWarningMessage() {
   gsmSerial.println("AT+CMGF=1"); // Setup text mode
   gsmSerial.println("AT+CMGS=\"" + mobileNumber + "\"\r");
   gsmSerial.println("Warning! Smoke is detected!");
+  gsmSerial.println((char) 26); // Ctrl + Z symbol to mark that it is SMS
+}
+
+void sendHighTempertureWarningMessage() {
+  gsmSerial.println("AT+CMGF=1"); // Setup text mode
+  gsmSerial.println("AT+CMGS=\"" + mobileNumber + "\"\r");
+  gsmSerial.println("Warning! High temperature (" + String(temperature) + "C)!");
   gsmSerial.println((char) 26); // Ctrl + Z symbol to mark that it is SMS
 }
