@@ -7,22 +7,21 @@
 
 #define RED_LED_PIN 2
 #define GREEN_LED_PIN 3
-#define GREEN_YELLOW_PIN 4
-
-#define DHT_PIN 5
+#define YELLOW_LED_PIN 4
+#define DHT_PIN 6
 #define DHT_TYPE DHT11
-
+#define RELAY_PIN 5
+#define MQ5_SENSOR_PIN 8
 #define MQ135_SENSOR_PIN 9
 #define MQ7_SENSOR_PIN 10
 #define MQ2_SENSOR_PIN 11
 #define FLAME_SENSOR_PIN 12
 #define SOUNDER_PIN 13
+#define RX_PIN 22
+#define TX_PIN 7
 
 #define LCD_I2C_ADRESS 0x20
 #define KEYPAD_I2C_ADDRESS 0x21
-
-#define RX_PIN 22
-#define TX_PIN 8
 
 const byte ROWS = 4;
 const byte COLUMNS = 3;
@@ -47,6 +46,7 @@ enum SystemStatus {
   CO_2,
   SMOKE,
   FLAME,
+  GAS,
   HIGH_TEMPERATURE,
   HUMIDITY,
   OK
@@ -60,6 +60,7 @@ const Keypad_I2C keypad(makeKeymap(KEYBOARD_KEYS), ROW_PINS, COLUMN_PINS, ROWS, 
 boolean isDeviceConfigured;
 boolean isSmsSent;
 byte flameValue;
+byte gasValue;
 byte smokeValue;
 byte coValue;
 byte co2Value;
@@ -81,14 +82,16 @@ void setup() {
 void initPins() {
   pinMode(FLAME_SENSOR_PIN, INPUT);
   pinMode(MQ2_SENSOR_PIN, INPUT);
+  pinMode(MQ5_SENSOR_PIN, INPUT);
   pinMode(MQ7_SENSOR_PIN, INPUT);
   pinMode(MQ135_SENSOR_PIN, INPUT);
   pinMode(DHT_PIN, INPUT);
 
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(GREEN_LED_PIN, OUTPUT);
-  pinMode(GREEN_YELLOW_PIN, OUTPUT);
+  pinMode(YELLOW_LED_PIN, OUTPUT);
   pinMode(SOUNDER_PIN, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
 }
 
 void initGsm() {
@@ -169,6 +172,7 @@ void readSensors() {
   smokeValue = digitalRead(MQ2_SENSOR_PIN);
   coValue = digitalRead(MQ7_SENSOR_PIN);
   co2Value = digitalRead(MQ135_SENSOR_PIN);
+  gasValue = digitalRead(MQ5_SENSOR_PIN);
   flameValue = digitalRead(FLAME_SENSOR_PIN);
   humidity = dht.readHumidity();
   temperature = dht.readTemperature();
@@ -176,20 +180,20 @@ void readSensors() {
 
 void displaySensorsInformation() {
   lcd.clear();
-  printOnLcd(0, 0, "Flame: " + String(flameValue));
-  printOnLcd(0, 1, "Smoke: " + String(smokeValue));
-  printOnLcd(0, 2, "CO: " + String(coValue));
-  printOnLcd(0, 3, "CO2: " + String(co2Value));
-
-  delay(1000);
-
-  lcd.clear();
   printOnLcd(0, 0, "Humidity: " + String(humidity) + "%");
   printOnLcd(0, 1, "Temperature: " + String(temperature) + (char) 223 + "C");
 }
 
 boolean isDangerousSituation() {
-  return isSmoke() || isFlame() || isCo() || isCo2() || isHighTemperature();
+  return isGas() || isSmoke() || isFlame() || isCo() || isCo2() || isHighTemperature();
+}
+
+boolean isGas() {
+  if (gasValue == HIGH) {
+    systemStatus = GAS;
+    return true;
+  }
+  return false;
 }
 
 boolean isSmoke() {
@@ -242,8 +246,11 @@ void printOnLcd(int column, int row, String text) {
 }
 
 void processWetSituation() {
-  digitalWrite(GREEN_YELLOW_PIN, HIGH);
+  digitalWrite(YELLOW_LED_PIN, HIGH);
   digitalWrite(GREEN_LED_PIN, LOW);
+  digitalWrite(RED_LED_PIN, LOW);
+  digitalWrite(SOUNDER_PIN, LOW);
+  digitalWrite(RELAY_PIN, LOW);
 
   lcd.clear();
   printOnLcd(0, 0, "Humidity value > " + String(HUMIDITY_MAX_BORDER) + "%");
@@ -255,9 +262,13 @@ void processDangerousSituation() {
   digitalWrite(RED_LED_PIN, HIGH);
   digitalWrite(SOUNDER_PIN, HIGH);
   digitalWrite(GREEN_LED_PIN, LOW);
-  digitalWrite(GREEN_YELLOW_PIN, LOW);
+  digitalWrite(YELLOW_LED_PIN, LOW);
+  digitalWrite(RELAY_PIN, HIGH);
 
   switch (systemStatus) {
+    case GAS:
+      displayGasWarningMessage();
+      break;
     case CO:
       displayCoWarningMessage();
       break;
@@ -276,6 +287,14 @@ void processDangerousSituation() {
   }
 
   sendWarningMessage();
+}
+
+void displayGasWarningMessage() {
+  lcd.clear();
+  printOnLcd(7, 0, "WARNING!");
+  printOnLcd(2, 1, "Gas is detected!");
+  printOnLcd(2, 2, "SMS notification");
+  printOnLcd(7, 3, "is sent.");
 }
 
 void displayCoWarningMessage() {
@@ -321,8 +340,9 @@ void displayHighTemperatureWarningMessage() {
 void processOkSituation() {
   digitalWrite(RED_LED_PIN, LOW);
   digitalWrite(SOUNDER_PIN, LOW);
-  digitalWrite(GREEN_YELLOW_PIN, LOW);
+  digitalWrite(YELLOW_LED_PIN, LOW);
   digitalWrite(GREEN_LED_PIN, HIGH);
+  digitalWrite(RELAY_PIN, LOW);
 
   displaySensorsInformation();
 
@@ -333,6 +353,9 @@ void processOkSituation() {
 void sendWarningMessage() {
   if (!isSmsSent) {
     switch (systemStatus) {
+      case GAS:
+        sendGasWarningMessage();
+        break;
       case CO:
         sendCoWarningMessage();
         break;
@@ -352,6 +375,13 @@ void sendWarningMessage() {
 
     isSmsSent = true;
   }
+}
+
+void sendGasWarningMessage() {
+  gsmSerial.println("AT+CMGF=1"); // Setup text mode
+  gsmSerial.println("AT+CMGS=\"" + mobileNumber + "\"\r");
+  gsmSerial.println("Warning! Gas is detected!");
+  gsmSerial.println((char) 26); // Ctrl + Z symbol to mark that it is SMS
 }
 
 void sendCoWarningMessage() {
