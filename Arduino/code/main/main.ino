@@ -29,8 +29,8 @@ const byte COLUMNS = 3;
 const byte LCD_ROWS_AMOUNT = 4;
 const byte LCD_COLUMNS_AMOUNT = 20;
 
-const byte HUMIDITY_MAX_BORDER = 80;
-const byte TEMPERATURE_MAX_BORDER = 40;
+const byte HUMIDITY_MAX_BORDER = 85;
+const byte TEMPERATURE_MAX_BORDER = 50;
 
 const char KEYBOARD_KEYS[ROWS][COLUMNS] = {
   {'1', '2', '3'},
@@ -251,11 +251,6 @@ void processWetSituation() {
   digitalWrite(RED_LED_PIN, LOW);
   digitalWrite(SOUNDER_PIN, LOW);
   digitalWrite(RELAY_PIN, LOW);
-
-  lcd.clear();
-  printOnLcd(0, 0, "Humidity value > " + String(HUMIDITY_MAX_BORDER) + "%");
-  printOnLcd(5, 1, "Hood system");
-  printOnLcd(5, 2, "is enabled.");
 }
 
 void processDangerousSituation() {
