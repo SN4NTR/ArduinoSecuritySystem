@@ -1,0 +1,61 @@
+Removed Pin From Net: NetName=NetDD4_2 Pin=DD8-2
+Removed Pin From Net: NetName=NetDD4_4 Pin=DD8-4
+Removed Pin From Net: NetName=+5 Pin=DD8-5
+Removed Pin From Net: NetName=GND Pin=DD8-6
+Removed Pin From Net: NetName=+5 Pin=DD8-7
+Removed Pin From Net: NetName=GND Pin=DD8-9
+Removed Pin From Net: NetName=GND Pin=DD8-15
+Removed Pin From Net: NetName=+5 Pin=XS9-1
+Removed Pin From Net: NetName=GND Pin=XS9-3
+Removed Pin From Net: NetName=+5 Pin=XS9-4
+Removed Pin From Net: NetName=GND Pin=XS9-6
+Removed Pin From Net: NetName=+5 Pin=XS9-7
+Removed Pin From Net: NetName=GND Pin=XS9-9
+Removed Pin From Net: NetName=+5 Pin=XS9-10
+Removed Pin From Net: NetName=GND Pin=XS9-12
+Removed Pin From Net: NetName=+5 Pin=XS9-13
+Removed Pin From Net: NetName=GND Pin=XS9-15
+Removed Pin From Net: NetName=+5 Pin=XS9-16
+Removed Pin From Net: NetName=GND Pin=XS9-18
+Removed Pin From Net: NetName=+5 Pin=XS9-19
+Removed Pin From Net: NetName=GND Pin=XS9-21
+Removed Pin From Net: NetName=+5 Pin=XS9-22
+Removed Pin From Net: NetName=GND Pin=XS9-24
+Removed Member From Class: ClassName=main Member=DD9
+Removed Member From Class: ClassName=main Member=XS10
+Change Component Comment : Designator=VD5 Old Comment=diode_red New Comment=diode_green
+Change Component Comment : Designator=VD4 Old Comment=diode_red New Comment=diode_yellow
+Change Component Designator: OldDesignator=DD9 NewDesignator=DD8
+Change Component Designator: OldDesignator=R5 NewDesignator=R10
+Change Component Designator: OldDesignator=R6 NewDesignator=R13
+Change Component Designator: OldDesignator=R7 NewDesignator=R11
+Change Component Designator: OldDesignator=R8 NewDesignator=R16
+Change Component Designator: OldDesignator=R9 NewDesignator=R5
+Change Component Designator: OldDesignator=R10 NewDesignator=R14
+Change Component Designator: OldDesignator=R11 NewDesignator=R6
+Change Component Designator: OldDesignator=R12 NewDesignator=R7
+Change Component Designator: OldDesignator=R13 NewDesignator=R8
+Change Component Designator: OldDesignator=R14 NewDesignator=R9
+Change Component Designator: OldDesignator=R15 NewDesignator=R12
+Change Component Designator: OldDesignator=R16 NewDesignator=R17
+Change Component Designator: OldDesignator=R17 NewDesignator=R15
+Change Component Designator: OldDesignator=VT1 NewDesignator=VT2
+Change Component Designator: OldDesignator=VT2 NewDesignator=VT3
+Change Component Designator: OldDesignator=VT3 NewDesignator=VT1
+Change Component Designator: OldDesignator=XS10 NewDesignator=XS9
+Change Net Name : Old Net Name=NetDD9_1 New Net Name=NetDD8_1
+Change Net Name : Old Net Name=NetDD9_26 New Net Name=NetDD8_26
+Change Net Name : Old Net Name=NetDD9_30 New Net Name=NetDD8_30
+Change Net Name : Old Net Name=NetDD9_31 New Net Name=NetDD8_31
+Change Net Name : Old Net Name=NetDD9_32 New Net Name=NetDD8_32
+Change Net Name : Old Net Name=NetDD9_60 New Net Name=NetDD8_60
+Change Net Name : Old Net Name=NetR5_2 New Net Name=NetR10_2
+Change Net Name : Old Net Name=NetR7_2 New Net Name=NetR11_2
+Change Net Name : Old Net Name=NetR8_1 New Net Name=NetR16_1
+Change Net Name : Old Net Name=NetR9_2 New Net Name=NetR5_2
+Change Net Name : Old Net Name=NetR12_1 New Net Name=NetR7_1
+Change Net Name : Old Net Name=NetR13_1 New Net Name=NetR8_1
+Change Net Name : Old Net Name=NetR14_1 New Net Name=NetR9_1
+Change Net Name : Old Net Name=NetR15_2 New Net Name=NetR12_2
+Change Net Name : Old Net Name=NetR16_1 New Net Name=NetR17_1
+Added Room: Name=main
