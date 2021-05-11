@@ -1,0 +1,9 @@
+Removed Pin From Net: NetName=+5 Pin=DD7-6
+Removed Pin From Net: NetName=+5 Pin=XS6-1
+Removed Pin From Net: NetName=GND Pin=XS6-2
+Removed Pin From Net: NetName=NetDD4_2 Pin=XS6-3
+Removed Pin From Net: NetName=NetDD4_4 Pin=XS6-4
+Added Pin To Net: NetName=GND Pin=DD7-6
+Added Member To Class: ClassName=main Member=Component DD8 SIM900A
+Added Member To Class: ClassName=main Member=Component XS9 antenn_RECE.20279.001E.01
+Added Room: Name=main
