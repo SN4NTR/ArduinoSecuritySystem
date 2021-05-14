@@ -1,0 +1,24 @@
+Removed Pin From Net: NetName=GND Pin=XS2-1
+Removed Pin From Net: NetName=+5 Pin=XS2-2
+Removed Member From Class: ClassName=main Member=XS2
+Added Pin To Net: NetName=GND Pin=DD3-1
+Added Pin To Net: NetName=NetDD3_4 Pin=DD3-4
+Added Pin To Net: NetName=NetDD3_4 Pin=DD4-10
+Added Net: Name=NetDD3_4
+Added Pin To Net: NetName=NetDD3_5 Pin=DD3-5
+Added Pin To Net: NetName=NetDD3_5 Pin=DD4-11
+Added Net: Name=NetDD3_5
+Added Pin To Net: NetName=NetDD3_6 Pin=DD3-6
+Added Pin To Net: NetName=NetDD3_6 Pin=DD4-12
+Added Net: Name=NetDD3_6
+Added Pin To Net: NetName=NetDD3_11 Pin=DD3-11
+Added Pin To Net: NetName=NetDD3_11 Pin=DD4-16
+Added Net: Name=NetDD3_11
+Added Pin To Net: NetName=NetDD3_12 Pin=DD3-12
+Added Net: Name=NetDD3_12
+Added Pin To Net: NetName=NetDD3_13 Pin=DD3-13
+Added Net: Name=NetDD3_13
+Added Pin To Net: NetName=NetDD3_14 Pin=DD3-14
+Added Net: Name=NetDD3_14
+Added Member To Class: ClassName=main Member=Component DD3 LCD-20X4B
+Added Room: Name=main
