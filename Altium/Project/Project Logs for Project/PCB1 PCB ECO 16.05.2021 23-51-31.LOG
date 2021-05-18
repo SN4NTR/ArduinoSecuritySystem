@@ -1,0 +1,5 @@
+Change Component Footprint: Designator=C1 Old Footprint=PCAP_6_3x11THRU-ELECT_NCA New Footprint=PCAP_10X20_RUB
+Change Component Footprint: Designator=C7 Old Footprint=PCAP_6_3x11THRU-ELECT_NCA New Footprint=PCAP_10X20_RUB
+Change Component Comment : Designator=C1 Old Comment=pol_10mkF New Comment=pol_100mkF
+Change Component Comment : Designator=C7 Old Comment=pol_10mkF New Comment=pol_100mkF
+Added Room: Name=main

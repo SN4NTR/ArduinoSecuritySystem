@@ -1,0 +1,4 @@
+Change Component Footprint: Designator=C1 Old Footprint=PCAP_10X20_RUB New Footprint=PCAP_6_3x11THRU-ELECT_NCA
+Change Component Footprint: Designator=C7 Old Footprint=PCAP_10X20_RUB New Footprint=PCAP_6_3x11THRU-ELECT_NCA
+Change Component Comment: Designator=C1 Old Comment=pol_100mkF New Comment=pol_10mkF
+Change Component Comment: Designator=C7 Old Comment=pol_100mkF New Comment=pol_10mkF
